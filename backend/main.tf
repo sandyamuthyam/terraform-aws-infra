@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "your-s3-bucket-name-06022025"
+  bucket = "terraform-state-bucket-06022025"
   acl    = "private"
 
   versioning {
