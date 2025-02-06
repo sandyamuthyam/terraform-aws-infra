@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket         = "your-s3-bucket-name-06022025"
-    key            = "path/to/your/terraform.tfstate"
-    region         = "us-east-1"
+    bucket         = "terraform-state-bucket-06022025"
+    key            = "environments/dev/terraform.tfstate"
+    region         = "us-west-2"
     encrypt        = true
     dynamodb_table = "terraform-lock-table"
   }
@@ -26,32 +26,4 @@ module "compute" {
 module "security_group" {
   source = "../../modules/security_group"
   vpc_id = module.vpc.vpc_id
-}
-
-resource "aws_s3_bucket" "terraform_state" {
-  bucket = "your-s3-bucket-name"
-  acl    = "private"
-
-  versioning {
-    enabled = true
-  }
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-}
-
-resource "aws_dynamodb_table" "terraform_lock" {
-  name         = "terraform-lock-table"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "LockID"
-
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
 }
